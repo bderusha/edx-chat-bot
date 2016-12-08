@@ -1,24 +1,37 @@
 """Listens to all messages and recommends a room that may be better for that message"""
 """ """
+import json
 
 OPEN_EDX_ROOM_KEYWORDS = {
-    '<#C0WL6SPRA|ecommerce>': [
-        'ecom', 'ecommerce', 'paypal', 'stripe', 'stripe', 'braintree', 'payment processor'
-    ],
+    'ecommerce': {
+        'id': 'C0WL6SPRA',
+        'patterns': [
+            'ecom', 'ecommerce', 'paypal', 'stripe', 'stripe', 'braintree', 'payment processor'
+        ],
+    },
+    'ops': {
+        'id': 'C08B4LZEZ',
+        'patterns': [
+        ],
+    }
 }
 
 
 def room_recommender(text):
     clean_text = text.lower()
-    for room, keywords in OPEN_EDX_ROOM_KEYWORDS.iteritems():
-        for keyword in keywords:
+    for room_name, room_data in OPEN_EDX_ROOM_KEYWORDS.iteritems():
+        for keyword in room_data.get('patterns'):
             if keyword in clean_text:
-                return room
+                return (room_data['id'], room_name)
 
 
 def on_message(msg, server):
-    print(msg)
+    res = server.slack.api_call('channels.list')
+    print(json.dumps(json.loads(res), indent=4))
     text = msg.get("text", "")
-    recommendation = room_recommender(text)
-    if recommendation:
-        return "Thanks for posting! You may have better luck posting this in {room}".format(room=recommendation)
+    (room_id, room_name) = room_recommender(text)
+    if room_id and room_name:
+        return "Thanks for posting! You may have better luck posting this in <#{room_id}|{room_name}>".format(
+            room_id=room_id,
+            room_name=room_name
+        )
