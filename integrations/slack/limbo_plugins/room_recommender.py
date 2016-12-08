@@ -21,7 +21,7 @@ OPEN_EDX_ROOM_KEYWORDS = {
 
 def room_recommender(text):
     clean_text = text.lower()
-    for room_name, room_data in OPEN_EDX_ROOM_KEYWORDS.iteritems():
+    for room_name, room_data in OPEN_EDX_ROOM_KEYWORDS.items():
         for keyword in room_data.get('patterns'):
             if keyword in clean_text:
                 return room_name

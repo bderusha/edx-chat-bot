@@ -9,7 +9,7 @@ OPEN_EDX_ROOM_KEYWORDS = {
 
 def room_recommender(text):
     clean_text = text.lower()
-    for room, keywords in OPEN_EDX_ROOM_KEYWORDS.iteritems():
+    for room, keywords in OPEN_EDX_ROOM_KEYWORDS.items():
         for keyword in keywords:
             if keyword in clean_text:
                 return room
