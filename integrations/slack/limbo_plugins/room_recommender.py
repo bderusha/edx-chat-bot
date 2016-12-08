@@ -12,7 +12,7 @@ OPEN_EDX_ROOM_KEYWORDS = {
     'ops': {
         'id': 'C08B4LZEZ',
         'patterns': [
-            'azure',
+            'azure', 'docker', 'ubuntu', 'ansible',
         ],
     },
 }
@@ -27,13 +27,18 @@ def room_recommender(text):
 
 
 def on_message(msg, server):
-    # res = server.slack.api_call('channels.list')
-    # print(json.dumps(json.loads(res), indent=4))
+    res = server.slack.api_call('im.open', post_data={'user': msg.get('user')})
+    user_info = json.loads(res)
+    user_dm_channel_id = user_info['channel']['id']
+
+    print(msg)
     text = msg.get("text", "")
     room_name = room_recommender(text)
-    if room_name:
+    if room_name and user_dm_channel_id:
         room_id = OPEN_EDX_ROOM_KEYWORDS[room_name]['id']
-        return "Thanks for posting! You may have better luck posting this in <#{room_id}|{room_name}>".format(
+        response_msg = "Thanks for posting your message: \"{msg}\" \n You may have better luck posting this in <#{room_id}|{room_name}>".format(
+            msg=text,
             room_id=room_id,
             room_name=room_name
         )
+        server.slack.post_message(user_dm_channel_id, response_msg)
