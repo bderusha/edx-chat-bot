@@ -12,8 +12,9 @@ OPEN_EDX_ROOM_KEYWORDS = {
     'ops': {
         'id': 'C08B4LZEZ',
         'patterns': [
+            'azure',
         ],
-    }
+    },
 }
 
 
@@ -22,15 +23,16 @@ def room_recommender(text):
     for room_name, room_data in OPEN_EDX_ROOM_KEYWORDS.iteritems():
         for keyword in room_data.get('patterns'):
             if keyword in clean_text:
-                return (room_data['id'], room_name)
+                return room_name
 
 
 def on_message(msg, server):
-    res = server.slack.api_call('channels.list')
-    print(json.dumps(json.loads(res), indent=4))
+    # res = server.slack.api_call('channels.list')
+    # print(json.dumps(json.loads(res), indent=4))
     text = msg.get("text", "")
-    (room_id, room_name) = room_recommender(text)
-    if room_id and room_name:
+    room_name = room_recommender(text)
+    if room_name:
+        room_id = OPEN_EDX_ROOM_KEYWORDS[room_name]['id']
         return "Thanks for posting! You may have better luck posting this in <#{room_id}|{room_name}>".format(
             room_id=room_id,
             room_name=room_name
