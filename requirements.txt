@@ -1,3 +1,4 @@
 # development requirements
 
 limbo==4.4.2
+-e .
