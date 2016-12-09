@@ -3,7 +3,7 @@
 import pprint
 import re
 
-import helpers
+from .helpers import dm_user
 
 
 CHANNELS = {
@@ -57,4 +57,4 @@ def on_message(msg, server):
             room_id=room_id,
             room_name=room_name
         )
-        helpers.dm_user(server, msg.get('user'), response_msg)
+        dm_user(server, msg.get('user'), response_msg)

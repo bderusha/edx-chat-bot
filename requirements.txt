@@ -1,0 +1,5 @@
+# development requirements
+
+limbo==4.4.2
+pytest==3.0.5
+-e .

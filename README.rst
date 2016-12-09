@@ -15,7 +15,7 @@ Use the token of your slack bot to start the service::
 Adding functionality
 ====================
 
-Create a new python file under ``integrations/slack/limbo_plugins`` that
+Create a new python file under ``edx_chat_bot/limbo_plugins`` that
 defines the following function::
 
   def on_message(msg, server):
@@ -25,5 +25,5 @@ defines the following function::
 (any message anywhere that the bot can see), and ``server`` lets you perform
 actions such as sending messages.
 
-``integrations/slack/limbo_plugins/helpers.py`` is your best friend.  Dump all
+``edx_chat_bot/limbo_plugins/helpers.py`` is your best friend.  Dump all
 common code here.
