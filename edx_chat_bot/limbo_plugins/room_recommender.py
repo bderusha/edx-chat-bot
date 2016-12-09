@@ -3,7 +3,11 @@
 import pprint
 import re
 
-from .helpers import dm_user
+# This weirdness is because Limbo adds this directory to sys.path :(
+try:
+    from helpers import dm_user
+except ImportError:
+    from .helpers import dm_user
 
 
 CHANNELS = {
