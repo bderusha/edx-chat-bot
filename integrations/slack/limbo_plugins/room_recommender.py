@@ -1,40 +1,59 @@
 """Listens to all messages and recommends a room that may be better for that message"""
-""" """
-import json
+
+import pprint
+import re
+
 import helpers
 
-OPEN_EDX_ROOM_KEYWORDS = {
+
+CHANNELS = {
     'ecommerce': {
         'id': 'C0WL6SPRA',
-        'patterns': [
-            'ecom', 'ecommerce', 'paypal', 'stripe', 'stripe', 'braintree', 'payment processor'
-        ],
     },
     'ops': {
         'id': 'C08B4LZEZ',
-        'patterns': [
-            'azure', 'docker', 'ubuntu', 'ansible',
-        ],
     },
 }
 
+OPEN_EDX_ROOM_PATTERNS = [
+    ('ecom|ecommerce|paypal|stripe|braintree|payment processor', {
+        'channel': 'ecommerce',
+    }),
+    ('azure|docker|ubuntu|ansible', {
+        'channel': 'ops',
+    }),
+]
+
 
 def room_recommender(text):
-    clean_text = text.lower()
-    for room_name, room_data in OPEN_EDX_ROOM_KEYWORDS.items():
-        for keyword in room_data.get('patterns'):
-            if keyword in clean_text:
-                return room_name
+    for pattern, actions in OPEN_EDX_ROOM_PATTERNS:
+        if re.search(pattern, text):
+            return actions['channel']
 
+
+MY_INFO = None
 
 def on_message(msg, server):
-    print(msg)
-    text = msg.get("text", "")
+    """Called when a message happens in a channel the bot is in.
+
+    msg: dict
+    server: Limbo object thingy
+    """
+    global MY_INFO
+
+    if MY_INFO is None:
+        MY_INFO = server.slack.login_data['self']
+        # MY_INFO['id']
+
+    pprint.pprint(msg)
+    text = msg.get("text", "").lower()
+    text += msg.get("file", {}).get("preview", "")
     room_name = room_recommender(text)
     if room_name:
-        room_id = OPEN_EDX_ROOM_KEYWORDS[room_name]['id']
-        response_msg = "Thanks for posting your message: \"{msg}\" \n You may have better luck posting this in <#{room_id}|{room_name}>".format(
-            msg=text,
+        room_id = CHANNELS[room_name]['id']
+        response_text = "Thanks for posting your message: “{msg_text}”\n You may have better luck posting this in <#{room_id}|{room_name}>"
+        response_msg = response_text.format(
+            msg_text=text,
             room_id=room_id,
             room_name=room_name
         )
