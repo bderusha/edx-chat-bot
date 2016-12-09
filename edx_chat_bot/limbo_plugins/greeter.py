@@ -11,8 +11,8 @@ except ImportError:
 
 WELCOME_MESSAGE = (
     "Hey there! Welcome to the Open edX Slack.\n\n"
-    "We have a *number* of channels.  Choosing the best one can be tricky, "
-    "but will help get you the best discussion.\n\n"
+    "If you didn't know, we have a *number* of channels.  Choosing the best one can be tricky. "
+    "The right channel will help get you the best discussion.\n\n"
     "We have a "
     "<https://openedx.atlassian.net/wiki/x/sgCcC|wiki page with details of the main channels>. "
     "Please read it! :)"
