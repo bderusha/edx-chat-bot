@@ -9,10 +9,14 @@ except ImportError:
     from .helpers import dm_user, get_dm_history
 
 
-WELCOME_MESSAGE = """
-Hey there! Welcome to Open edX Slack.
-We have a number of channels.  Please use the best one.
-"""
+WELCOME_MESSAGE = (
+    "Hey there! Welcome to the Open edX Slack.\n\n"
+    "We have a *number* of channels.  Choosing the best one can be tricky, "
+    "but will help get you the best discussion.\n\n"
+    "We have a "
+    "<https://openedx.atlassian.net/wiki/x/sgCcC|wiki page with details of the main channels>. "
+    "Please read it! :)"
+)
 
 EASTER_EGG_TRIGGER = "Pretend this is my first message"
 
