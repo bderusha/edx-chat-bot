@@ -54,8 +54,9 @@ def on_message(msg, server):
     pprint.pprint(msg)
     text = msg.get("text", "").lower()
     text += msg.get("file", {}).get("preview", "")
-    trigger_string, room_name = room_recommender(text)
-    if room_name:
+    recommendation = room_recommender(text)
+    if recommendation:
+        trigger_string, room_name = recommendation
         room_id = CHANNELS[room_name]['id']
         response_text = "Hi, I noticed you were talking about “{trigger_string}”\n You may have better luck posting this in <#{room_id}|{room_name}>"
         response_msg = response_text.format(
