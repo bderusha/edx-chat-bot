@@ -4,7 +4,7 @@ channels, among other things.
 Quickstart
 ==========
 
-Make a virtualenv, source it, then install requirements::
+Make a virtualenv (using python 3), source it, then install requirements::
 
   make requirements
 
