@@ -31,8 +31,10 @@ OPEN_EDX_ROOM_PATTERNS = [
 
 def room_recommender(text):
     for pattern, actions in OPEN_EDX_ROOM_PATTERNS:
-        if re.search(pattern, text):
-            return actions['channel']
+        method = re.search(pattern, text)
+        if method:
+            match = method.group(0)
+            return (match, actions['channel'])
 
 
 MY_INFO = None
@@ -52,12 +54,12 @@ def on_message(msg, server):
     pprint.pprint(msg)
     text = msg.get("text", "").lower()
     text += msg.get("file", {}).get("preview", "")
-    room_name = room_recommender(text)
+    trigger_string, room_name = room_recommender(text)
     if room_name:
         room_id = CHANNELS[room_name]['id']
-        response_text = "Thanks for posting your message: “{msg_text}”\n You may have better luck posting this in <#{room_id}|{room_name}>"
+        response_text = "Hi, I noticed you were talking about “{trigger_string}”\n You may have better luck posting this in <#{room_id}|{room_name}>"
         response_msg = response_text.format(
-            msg_text=text,
+            trigger_string=trigger_string,
             room_id=room_id,
             room_name=room_name
         )
