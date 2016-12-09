@@ -1,9 +1,9 @@
 
 requirements :
-	pip install -r integrations/slack/requirements.txt
+	pip install -r requirements.txt
 
 run :
-	limbo --pluginpath integrations/slack/limbo_plugins
+	limbo --pluginpath edx_chat_bot/slack/limbo_plugins
 
 .PHONY : run requirements
 
